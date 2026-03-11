@@ -1,0 +1,39 @@
+# Render Blueprint Configuration
+# This file enables one-click deployment to Render
+
+services:
+  # Backend API Service
+  - type: web
+    name: aura-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: AURA_SALT
+        sync: false
+      - key: COUNSELLOR_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.13.2
+    healthCheckPath: /health
+    
+  # Frontend Static Site
+  - type: web
+    name: aura-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=3600
+      - path: /static/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable

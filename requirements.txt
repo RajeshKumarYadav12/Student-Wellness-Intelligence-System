@@ -1,0 +1,10 @@
+# AURA - All Requirements
+# Use this for development without Docker, or for CI/CD
+
+# Python 3.11+
+-r backend/requirements.txt
+
+# Additional dev tools
+ruff==0.1.13
+black==23.12.1
+isort==5.13.2
