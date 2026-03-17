@@ -15,13 +15,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "bakend_api": "@bakend_api"
-  },
-  "build": {
-    "env": {
-      "bakend_api": "@bakend_api"
-    }
-  }
+  ]
 }
