@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "aura-dashboard",
-  "buildCommand": "cd frontend && npm install && npm run build",
+  "buildCommand": "export bakend_api=https://student-wellness-intelligence-system.onrender.com && cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/build",
   "framework": null,
   "installCommand": "cd frontend && npm install",
@@ -17,11 +17,11 @@
     }
   ],
   "env": {
-    "REACT_APP_API_URL": "@react_app_api_url"
+    "bakend_api": "@bakend_api"
   },
   "build": {
     "env": {
-      "REACT_APP_API_URL": "@react_app_api_url"
+      "bakend_api": "@bakend_api"
     }
   }
 }

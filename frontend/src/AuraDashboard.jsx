@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import "./AuraDashboard.css";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+const API_URL = process.env.bakend_api || "http://localhost:8000";
 
 const AuraDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -146,26 +146,26 @@ const AuraDashboard = () => {
 
   const viewStudentDetail = async (studentId) => {
     console.log("Fetching details for student ID:", studentId);
-    
+
     if (!studentId || studentId.length < 5) {
       console.error("Invalid student ID:", studentId);
       alert(`Invalid student ID: ${studentId}`);
       return;
     }
-    
+
     try {
       // URL-encode the student ID to handle special characters like #
       const encodedStudentId = encodeURIComponent(studentId);
       const url = `${API_URL}/api/students/${encodedStudentId}`;
       console.log("Fetching from URL:", url);
-      
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
       console.log("Received student data:", data);
-      
+
       // Validate data structure before setting
       if (data && data.latest_risk && data.behavioral_history) {
         setSelectedStudent(data);
@@ -175,7 +175,9 @@ const AuraDashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching student details:", error);
-      alert(`Failed to fetch student details for ${studentId}. Error: ${error.message}`);
+      alert(
+        `Failed to fetch student details for ${studentId}. Error: ${error.message}`,
+      );
     }
   };
 
@@ -201,7 +203,7 @@ const AuraDashboard = () => {
 
   const getFilteredStudents = () => {
     if (!riskFilter) return students;
-    return students.filter(student => student.risk_level === riskFilter);
+    return students.filter((student) => student.risk_level === riskFilter);
   };
 
   return (
@@ -238,10 +240,10 @@ const AuraDashboard = () => {
 
       {/* KPI Cards */}
       <div className="kpi-cards">
-        <div 
-          className={`kpi-card critical ${riskFilter === 'critical' ? 'active-filter' : ''}`}
-          onClick={() => toggleRiskFilter('critical')}
-          style={{ cursor: 'pointer' }}
+        <div
+          className={`kpi-card critical ${riskFilter === "critical" ? "active-filter" : ""}`}
+          onClick={() => toggleRiskFilter("critical")}
+          style={{ cursor: "pointer" }}
           title="Click to filter critical risk students"
         >
           <AlertCircle size={24} />
@@ -251,10 +253,10 @@ const AuraDashboard = () => {
           </div>
         </div>
 
-        <div 
-          className={`kpi-card high ${riskFilter === 'high' ? 'active-filter' : ''}`}
-          onClick={() => toggleRiskFilter('high')}
-          style={{ cursor: 'pointer' }}
+        <div
+          className={`kpi-card high ${riskFilter === "high" ? "active-filter" : ""}`}
+          onClick={() => toggleRiskFilter("high")}
+          style={{ cursor: "pointer" }}
           title="Click to filter high risk students"
         >
           <TrendingUp size={24} />
@@ -264,10 +266,10 @@ const AuraDashboard = () => {
           </div>
         </div>
 
-        <div 
-          className={`kpi-card medium ${riskFilter === 'medium' ? 'active-filter' : ''}`}
-          onClick={() => toggleRiskFilter('medium')}
-          style={{ cursor: 'pointer' }}
+        <div
+          className={`kpi-card medium ${riskFilter === "medium" ? "active-filter" : ""}`}
+          onClick={() => toggleRiskFilter("medium")}
+          style={{ cursor: "pointer" }}
           title="Click to filter medium risk students"
         >
           <Activity size={24} />
@@ -277,10 +279,10 @@ const AuraDashboard = () => {
           </div>
         </div>
 
-        <div 
-          className={`kpi-card total ${riskFilter === null ? 'active-filter' : ''}`}
+        <div
+          className={`kpi-card total ${riskFilter === null ? "active-filter" : ""}`}
           onClick={() => setRiskFilter(null)}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: "pointer" }}
           title="Click to show all students"
         >
           <Users size={24} />
@@ -323,9 +325,20 @@ const AuraDashboard = () => {
                 <h2>Student Risk Overview</h2>
                 {riskFilter && (
                   <div className="filter-badge">
-                    Filtering: <span className="filter-value">{riskFilter.toUpperCase()}</span>
-                    <span className="filter-count">({getFilteredStudents().length} students)</span>
-                    <button className="clear-filter" onClick={() => setRiskFilter(null)} title="Clear filter">✕</button>
+                    Filtering:{" "}
+                    <span className="filter-value">
+                      {riskFilter.toUpperCase()}
+                    </span>
+                    <span className="filter-count">
+                      ({getFilteredStudents().length} students)
+                    </span>
+                    <button
+                      className="clear-filter"
+                      onClick={() => setRiskFilter(null)}
+                      title="Clear filter"
+                    >
+                      ✕
+                    </button>
                   </div>
                 )}
               </div>
@@ -342,74 +355,78 @@ const AuraDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {getFilteredStudents().slice(0, 50).map((student) => (
-                    <tr key={student.student_id}>
-                      <td className="mono">{student.student_id}</td>
-                      <td>
-                        <span
-                          className="risk-badge"
-                          style={{
-                            backgroundColor: getRiskBadgeColor(
-                              student.risk_level,
-                            ),
-                          }}
-                        >
-                          {student.risk_level}
-                        </span>
-                      </td>
-                      <td>{(student.anomaly_score * 100).toFixed(0)}%</td>
-                      <td>
-                        <div className="score-bar">
-                          <div
-                            className="score-fill"
+                  {getFilteredStudents()
+                    .slice(0, 50)
+                    .map((student) => (
+                      <tr key={student.student_id}>
+                        <td className="mono">{student.student_id}</td>
+                        <td>
+                          <span
+                            className="risk-badge"
                             style={{
-                              width: `${(student.sleep_score || 0) * 100}%`,
-                              backgroundColor:
-                                (student.sleep_score || 0) > 0.7
-                                  ? "#dc2626"
-                                  : "#16a34a",
+                              backgroundColor: getRiskBadgeColor(
+                                student.risk_level,
+                              ),
                             }}
-                          ></div>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="score-bar">
-                          <div
-                            className="score-fill"
-                            style={{
-                              width: `${(student.isolation_score || 0) * 100}%`,
-                              backgroundColor:
-                                (student.isolation_score || 0) > 0.7
-                                  ? "#dc2626"
-                                  : "#16a34a",
-                            }}
-                          ></div>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="score-bar">
-                          <div
-                            className="score-fill"
-                            style={{
-                              width: `${(student.drift_score || 0) * 100}%`,
-                              backgroundColor:
-                                (student.drift_score || 0) > 0.7
-                                  ? "#dc2626"
-                                  : "#16a34a",
-                            }}
-                          ></div>
-                        </div>
-                      </td>
-                      <td>
-                        <button
-                          className="btn-small"
-                          onClick={() => viewStudentDetail(student.student_id)}
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                          >
+                            {student.risk_level}
+                          </span>
+                        </td>
+                        <td>{(student.anomaly_score * 100).toFixed(0)}%</td>
+                        <td>
+                          <div className="score-bar">
+                            <div
+                              className="score-fill"
+                              style={{
+                                width: `${(student.sleep_score || 0) * 100}%`,
+                                backgroundColor:
+                                  (student.sleep_score || 0) > 0.7
+                                    ? "#dc2626"
+                                    : "#16a34a",
+                              }}
+                            ></div>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="score-bar">
+                            <div
+                              className="score-fill"
+                              style={{
+                                width: `${(student.isolation_score || 0) * 100}%`,
+                                backgroundColor:
+                                  (student.isolation_score || 0) > 0.7
+                                    ? "#dc2626"
+                                    : "#16a34a",
+                              }}
+                            ></div>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="score-bar">
+                            <div
+                              className="score-fill"
+                              style={{
+                                width: `${(student.drift_score || 0) * 100}%`,
+                                backgroundColor:
+                                  (student.drift_score || 0) > 0.7
+                                    ? "#dc2626"
+                                    : "#16a34a",
+                              }}
+                            ></div>
+                          </div>
+                        </td>
+                        <td>
+                          <button
+                            className="btn-small"
+                            onClick={() =>
+                              viewStudentDetail(student.student_id)
+                            }
+                          >
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -564,13 +581,15 @@ const AuraDashboard = () => {
                 <div className="metric-tile">
                   <div className="metric-label">Sleep</div>
                   <div className="metric-value">
-                    {((selectedStudent?.latest_risk?.sleep_score || 0) * 100).toFixed(0)}
+                    {(
+                      (selectedStudent?.latest_risk?.sleep_score || 0) * 100
+                    ).toFixed(0)}
                     %
                   </div>
                   <div
-                    className={`trend ${selectedStudent?.trends?.sleep_trend || 'stable'}`}
+                    className={`trend ${selectedStudent?.trends?.sleep_trend || "stable"}`}
                   >
-                    {selectedStudent?.trends?.sleep_trend || 'stable'}
+                    {selectedStudent?.trends?.sleep_trend || "stable"}
                   </div>
                 </div>
                 <div className="metric-tile">
@@ -582,21 +601,23 @@ const AuraDashboard = () => {
                     %
                   </div>
                   <div
-                    className={`trend ${selectedStudent?.trends?.isolation_trend || 'stable'}`}
+                    className={`trend ${selectedStudent?.trends?.isolation_trend || "stable"}`}
                   >
-                    {selectedStudent?.trends?.isolation_trend || 'stable'}
+                    {selectedStudent?.trends?.isolation_trend || "stable"}
                   </div>
                 </div>
                 <div className="metric-tile">
                   <div className="metric-label">Academic</div>
                   <div className="metric-value">
-                    {((selectedStudent?.latest_risk?.drift_score || 0) * 100).toFixed(0)}
+                    {(
+                      (selectedStudent?.latest_risk?.drift_score || 0) * 100
+                    ).toFixed(0)}
                     %
                   </div>
                   <div
-                    className={`trend ${selectedStudent?.trends?.academic_trend || 'stable'}`}
+                    className={`trend ${selectedStudent?.trends?.academic_trend || "stable"}`}
                   >
-                    {selectedStudent?.trends?.academic_trend || 'stable'}
+                    {selectedStudent?.trends?.academic_trend || "stable"}
                   </div>
                 </div>
               </div>
@@ -605,39 +626,48 @@ const AuraDashboard = () => {
             <div className="detail-section">
               <h3>Behavioral Signals</h3>
               <ul className="signals-list">
-                {(selectedStudent?.behavioral_signals || []).map((signal, idx) => (
-                  <li key={idx} className={`signal ${signal.severity}`}>
-                    <span className="signal-dot"></span>
-                    {signal.message}
-                  </li>
-                ))}
+                {(selectedStudent?.behavioral_signals || []).map(
+                  (signal, idx) => (
+                    <li key={idx} className={`signal ${signal.severity}`}>
+                      <span className="signal-dot"></span>
+                      {signal.message}
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
 
             <div className="detail-section">
               <h3>7-Day History</h3>
-              {selectedStudent?.behavioral_history && selectedStudent.behavioral_history.length > 0 ? (
+              {selectedStudent?.behavioral_history &&
+              selectedStudent.behavioral_history.length > 0 ? (
                 <ResponsiveContainer width="100%" height={150}>
                   <LineChart data={selectedStudent.behavioral_history}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="date" stroke="#94a3b8" hide />
-                  <YAxis stroke="#94a3b8" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#0f172a",
-                      border: "1px solid #334155",
-                    }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="dorm_ratio"
-                    stroke="#3b82f6"
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                    <XAxis dataKey="date" stroke="#94a3b8" hide />
+                    <YAxis stroke="#94a3b8" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#0f172a",
+                        border: "1px solid #334155",
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="dorm_ratio"
+                      stroke="#3b82f6"
+                      strokeWidth={2}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               ) : (
-                <p style={{ color: '#64748b', textAlign: 'center', padding: '1rem' }}>
+                <p
+                  style={{
+                    color: "#64748b",
+                    textAlign: "center",
+                    padding: "1rem",
+                  }}
+                >
                   No behavioral history available
                 </p>
               )}
