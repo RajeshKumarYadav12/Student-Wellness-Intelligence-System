@@ -1,7 +1,3 @@
-# 🛡️ AURA — Student Wellness Intelligence System
-
-[![Python](https://img.shields.io/badge/Python-3.13-blue)](https://python.org) [![FastAPI](https://img.shields.io/badge/FastAPI-0.109-green)](https://fastapi.tiangolo.com) [![React](https://img.shields.io/badge/React-18.2-blue)](https://reactjs.org) [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248)](https://mongodb.com) [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.6-orange)](https://scikit-learn.org) [![XGBoost](https://img.shields.io/badge/XGBoost-3.2-red)](https://xgboost.ai)
-
 **Privacy-First AI System for Early Mental Health Intervention in Universities**
 
 AURA (Automated University Risk Assessment) analyzes behavioral metadata—login patterns, WiFi zones, assignment submission times—to identify students showing early warning signs of mental health crises. **No message content, no cameras, no invasive monitoring**. Results appear on a real-time counselor dashboard enabling proactive intervention while preserving student privacy.
@@ -392,5 +388,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **AURA v1.0** | © 2026 | Built with ❤️ for student wellness
-#   S t u d e n t - W e l l n e s s - I n t e l l i g e n c e - S y s t e m  
+#   S t u d e n t - W e l l n e s s - I n t e l l i g e n c e - S y s t e m 
+ 
  
