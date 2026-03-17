@@ -199,7 +199,7 @@ def analyze_shap(model_data, X, feature_cols):
         print("   (This is normal if SHAP is not installed)")
 
 
-def analyze_risk_distribution():
+async def analyze_risk_distribution():
     """Analyze current risk distribution in database."""
     print("\n📈 Current Risk Distribution in Database...")
     
@@ -214,7 +214,7 @@ def analyze_risk_distribution():
         client.close()
         return predictions
     
-    predictions = asyncio.run(_load())
+    predictions = await _load()
     
     if not predictions:
         print("   ⚠️ No predictions in database yet")
@@ -259,7 +259,7 @@ async def main():
     analyze_shap(model_data, X, feature_cols)
     
     # Risk distribution
-    analyze_risk_distribution()
+    await analyze_risk_distribution()
     
     print("\n✅ Evaluation complete!")
     print("\n📁 Generated files:")

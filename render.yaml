@@ -18,7 +18,7 @@ services:
       - key: COUNSELLOR_KEY
         sync: false
     healthCheckPath: /health
-    
+
   # Frontend Static Site
   - type: web
     name: aura-frontend
