@@ -6,20 +6,6 @@
 
 ---
 
-## 📑 Table of Contents
-
-| Section                                | Description       |
-| -------------------------------------- | ----------------- |
-| [🎯 Overview](#overview)               | What is AURA?     |
-| [✨ Features](#features)               | Core capabilities |
-| [⚙️ Setup](#setup--installation)       | Getting started   |
-| [🔌 API](#api-documentation)           | HTTP endpoints    |
-| [🛠️ Tech Stack](#technology-stack)     | Technologies used |
-| [🚀 Deployment](#deployment)           | Production setup  |
-| [🐛 Troubleshooting](#troubleshooting) | Common issues     |
-
----
-
 ## 🎯 Overview
 
 **AURA** analyzes behavioral metadata (login patterns, WiFi zones, submission times) to identify students at risk of mental health crises. **No invasive monitoring—only anonymized behavioral signals with FERPA compliance.**
@@ -31,6 +17,20 @@
 - ⚡ **Real-Time Dashboard** - Live updates via SSE for instant alerts
 - 📈 **18 Features** - Sleep disruption, social isolation, academic drift detection
 - 🔄 **Auto TTL** - Behavioral logs auto-delete after 90 days
+
+---
+
+## 📑 Table of Contents
+
+| Section                                | Description       |
+| -------------------------------------- | ----------------- |
+| [🎯 Overview](#overview)               | What is AURA?     |
+| [✨ Features](#features)               | Core capabilities |
+| [⚙️ Setup](#setup--installation)       | Getting started   |
+| [🔌 API](#api-documentation)           | HTTP endpoints    |
+| [🛠️ Tech Stack](#technology-stack)     | Technologies used |
+| [🚀 Deployment](#deployment)           | Production setup  |
+| [🐛 Troubleshooting](#troubleshooting) | Common issues     |
 
 ---
 
